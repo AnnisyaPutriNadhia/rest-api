@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Auth;
+use Hash;
+use App\Models\User;
 
 class AuthController extends Controller
 {
@@ -24,7 +27,7 @@ class AuthController extends Controller
         if (!Auth::attempt($request->only('email', 'password'))) {
             return response()->json([
                 'message' => 'The provided cerdentials are incorrect.',
-            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+            ], 422);
         }
     
         $accessToken = Auth::user()->createToken($request->device_name)->plainTextToken;
@@ -35,7 +38,7 @@ class AuthController extends Controller
             'meta' => [
                 'token' => $accessToken
             ]
-        ], Response::HTTP_CREATED);
+        ],201);
     }
     
     
@@ -62,7 +65,7 @@ class AuthController extends Controller
             'meta' => [
                 'token' => $accessToken
             ]
-        ], Response::HTTP_CREATED);
+        ], 201);
     
     }
     
@@ -72,7 +75,7 @@ class AuthController extends Controller
         return response()->json([
             'message' => 'success',
           
-        ], Response::HTTP_OK);
+        ], 200);
     
     }
 }
